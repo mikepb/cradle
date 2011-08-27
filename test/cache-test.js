@@ -6,7 +6,7 @@ var path = require('path'),
 require.paths.unshift(path.join(__dirname, '..', 'lib'));
 
 var vows = require('vows');
-var cradle = require('cradle');
+var cradle = require('../lib/cradle');
 
 vows.describe('cradle/Cache').addBatch({
     'A cradle.Connection instance with a *cacheSize* specified': {

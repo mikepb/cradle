@@ -5,10 +5,8 @@ var path = require('path'),
     http = require('http'),
     fs = require('fs');
 
-require.paths.unshift(path.join(__dirname, '..', 'lib'));
-
 var vows = require('vows');
-var cradle = require('cradle');
+var cradle = require('../lib/cradle');
 
 var document = { _rev: '2-76be', _id: 'f6av8', name: 'buzz', age: 99 };
 

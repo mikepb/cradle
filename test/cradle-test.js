@@ -7,8 +7,6 @@ var path = require('path'),
 
 require('./scripts/prepare-db');
 
-require.paths.unshift(path.join(__dirname, '..', 'lib'));
-
 function status(code) {
     return function (e, res) {
         assert.ok(res || e);
@@ -24,7 +22,7 @@ function mixin(target) {
     return target;
 }
 
-var cradle = require('cradle');
+var cradle = require('../lib/cradle');
 var vows = require('vows');
 
 vows.describe("Cradle").addBatch({
