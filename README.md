@@ -51,7 +51,9 @@ Cradle's API builds right on top of Node's asynch API. Every asynch method takes
 
 ### Opening a connection ###
 
-    new(cradle.Connection)('http://living-room.couch', 5984, {
+    new(cradle.Connection)({
+        host: 'http://living-room.couch',
+        port: 5984,
         cache: true,
         raw: false
     });
@@ -63,7 +65,7 @@ Note that you can also use `cradle.setup` to set a global configuration:
     cradle.setup({host: 'living-room.couch',
                   cache: true, raw: false});
     var c = new(cradle.Connection),
-       cc = new(cradle.Connection)('173.45.66.92');
+       cc = new(cradle.Connection)({ host: '173.45.66.92' });
 
 ### creating a database ###
 
@@ -222,14 +224,15 @@ If `remove` is called without a revision, and the document was recently fetched 
 Connecting with authentication and SSL
 --------------------------------------
 
-    var connection = new(cradle.Connection)('https://couch.io', 443, {
+    var connection = new(cradle.Connection)({
+        host: 'https://couch.io', port: 443,
         auth: { username: 'john', password: 'fha82l' }
     });
 
 or
 
-    var connection = new(cradle.Connection)('couch.io', 443, {
-        secure: true,
+    var connection = new(cradle.Connection)({
+        host: 'couch.io', port: 443, secure: true,
         auth: { username: 'john', password: 'fha82l' }
     });
 
