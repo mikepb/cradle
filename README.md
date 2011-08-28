@@ -22,7 +22,7 @@ synopsis
 
 ```javascript
 var cradle = require('cradle');
-var db = new(cradle.Connection)().database('starwars');
+var db = cradle.createClient().database('starwars');
 
 db.get('vader', function (err, doc) {
     doc.name; // 'Darth Vader'
@@ -51,10 +51,10 @@ API
 
 Cradle's API builds right on top of Node's asynch API. Every asynch method takes a callback as its last argument. The return value is an `event.EventEmitter`, so listeners can also be optionally added.
 
-### Opening a connection ###
+### Creating a client ###
 
 ```javascript
-new(cradle.Connection)({
+cradle.createClient({
     host: 'http://living-room.couch',
     port: 5984,
     cache: true,
@@ -64,13 +64,13 @@ new(cradle.Connection)({
 
 _Defaults to `127.0.0.1:5984`_
 
-Note that you can also use `cradle.setup` to set a global configuration:
+Note that you can also use `cradle.setup()` to set a global configuration:
 
 ```javascript
 cradle.setup({host: 'living-room.couch',
               cache: true, raw: false});
-var c = new(cradle.Connection),
-   cc = new(cradle.Connection)({ host: '173.45.66.92' });
+var c = cradle.createClient(),
+   cc = cradle.createClient({ host: '173.45.66.92' });
 ```
 
 ### Alternate servers ###
@@ -280,7 +280,7 @@ Connecting with authentication and SSL
 --------------------------------------
 
 ```javascript
-var connection = new(cradle.Connection)({
+var connection = cradle.createClient({
     host: 'https://couch.io', port: 443,
     auth: { username: 'john', password: 'fha82l' }
 });
@@ -289,7 +289,7 @@ var connection = new(cradle.Connection)({
 or
 
 ```javascript
-var connection = new(cradle.Connection)({
+var connection = cradle.createClient({
     host: 'couch.io', port: 443, secure: true,
     auth: { username: 'john', password: 'fha82l' }
 });
@@ -339,7 +339,7 @@ Other API methods
 ### CouchDB Server level ###
 
 ```javascript
-new(cradle.Connection)().*
+cradle.createClient().*
 ```
 
 - `databases()`: Get list of databases
@@ -352,7 +352,7 @@ new(cradle.Connection)().*
 
 ### database level ###
 
-    new(cradle.Connection)().database('starwars').*
+    cradle.createClient().database('starwars').*
 
 - `info()`: Database information
 - `all()`: Get all documents
