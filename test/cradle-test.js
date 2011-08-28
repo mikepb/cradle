@@ -33,7 +33,7 @@ vows.describe("Cradle").addBatch({
                 port: 4242,
                 milk: 'white'
             });
-            return new(cradle.Connection);
+            return cradle.createClient();
         },
         "should be carried on to new Connections": function (c) {
             assert.equal(c.options.host, "cloudhead.io");
@@ -44,7 +44,7 @@ vows.describe("Cradle").addBatch({
         },
         "with just a {} passed to a new Connection object": {
             topic: function () {
-                return new(cradle.Connection)({milk: 'green'});
+                return cradle.createClient({milk: 'green'});
             },
             "should override the defaults": function (c) {
                 assert.equal(c.options.milk, 'green');
@@ -53,7 +53,7 @@ vows.describe("Cradle").addBatch({
         },
         "with a host and port passed to Connection": {
             topic: function () {
-                return new(cradle.Connection)({
+                return cradle.createClient({
                     host: "255.255.0.0",
                     port: 9696
                 });
@@ -65,7 +65,7 @@ vows.describe("Cradle").addBatch({
         },
         "with a host, port and options passed to Connection": {
             topic: function () {
-                return new(cradle.Connection)({
+                return cradle.createClient({
                     host: "4.4.4.4",
                     port: 911,
                     raw: true
@@ -79,7 +79,7 @@ vows.describe("Cradle").addBatch({
         },
         "with a host and port passed to Connection": {
             topic: function () {
-                return new(cradle.Connection)({
+                return cradle.createClient({
                     host: "https://4.4.4.4",
                     port: 911,
                     raw: true
@@ -94,7 +94,7 @@ vows.describe("Cradle").addBatch({
         },
         "with a the 'https' protocol": {
             topic: function () {
-                return new(cradle.Connection)({
+                return cradle.createClient({
                     host: "https://couch.io",
                     port: 5984
                 });
