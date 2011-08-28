@@ -91,7 +91,7 @@ cradle.setup({
 });
 ```
 
-The primary server is given as in the normal configuration. When the primary server refuses a connection, the request will be routed to the alternate servers, in the order given. Requests may fail if the alternate servers have not finished replicating recent changes.
+The primary server is given as in the normal configuration. Alternate servers configured in the `servers` array inherit configuration options from the primary server. When the primary server refuses a connection, the request will be routed to the alternate servers, in the order given. Requests may fail if the alternate servers have not finished replicating recent changes.
 
 ### creating a database ###
 
