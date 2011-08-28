@@ -67,6 +67,26 @@ Note that you can also use `cradle.setup` to set a global configuration:
     var c = new(cradle.Connection),
        cc = new(cradle.Connection)({ host: '173.45.66.92' });
 
+### Alternate servers ###
+
+Alternate servers are supported via the `servers` option:
+
+```javascript
+cradle.setup({
+    host: 'http://living-room.couch',
+    port: 5984,
+    cache: true,
+    servers: [
+        {
+            host: 'http://alt.living-room.couch',
+            port: 1999
+        }
+    ]
+});
+```
+
+The primary server is given as in the normal configuration. When the primary server refuses a connection, the request will be routed to the alternate servers, in the order given. Requests may fail if the alternate servers have not finished replicating recent changes.
+
 ### creating a database ###
 
     var db = c.database('starwars');
