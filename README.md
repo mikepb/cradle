@@ -6,16 +6,31 @@ A high-level, caching, CouchDB client for Node.js
 introduction
 ------------
 
-Cradle is an asynchronous javascript client for [CouchDB](http://couchdb.apache.org).
-It is somewhat higher-level than most other CouchDB clients, requiring a little less knowledge of CouchDB's REST API.
-Cradle also has built-in write-through caching, giving you an extra level of speed, and making document _updates_ and _deletion_ easier.
-Cradle was built from the love of CouchDB and Node.js, and tries to make the most out of this wonderful marriage of technologies.
+Cradle is an asynchronous javascript client for
+[CouchDB](http://couchdb.apache.org).
+
+It is somewhat higher-level than most other CouchDB clients, requiring a
+little less knowledge of CouchDB's REST API.
+
+Cradle also has built-in write-through caching, giving you an extra level of
+speed, and making document _updates_ and _deletion_ easier.
+
+Cradle was built from the love of CouchDB and Node.js, and tries to make the
+most out of this wonderful marriage of technologies.
 
 philosophy
 ----------
 
-The key concept here is the common ground shared by CouchDB and Node.js, that is, _javascript_. The other important aspect of this marriage is the asynchronous behaviors of both these technologies. Cradle tries to make use of these symmetries, whenever it can.
-Cradle's API, although closely knit with CouchDB's, isn't overly so. Whenever the API can be abstracted in a friendlier, simpler way, that's the route it takes. So even though a large part of the `Cradle <--> CouchDB` mappings are one to one, some Cradle functions, such as `save()`, can perform more than one operation, depending on how they are used.
+The key concept here is the common ground shared by CouchDB and Node.js,
+that is, _javascript_. The other important aspect of this marriage is the
+asynchronous behaviors of both these technologies. Cradle tries to make use
+of these symmetries, whenever it can.
+
+Cradle's API, although closely knit with CouchDB's, isn't overly so.
+Whenever the API can be abstracted in a friendlier, simpler way, that's the
+route it takes. So even though a large part of the `Cradle <--> CouchDB`
+mappings are one to one, some Cradle functions, such as `save()`, can
+perform more than one operation, depending on how they are used.
 
 synopsis
 --------
@@ -49,7 +64,9 @@ installation
 API
 ---
 
-Cradle's API builds right on top of Node's asynch API. Every asynch method takes a callback as its last argument. The return value is an `event.EventEmitter`, so listeners can also be optionally added.
+Cradle's API builds right on top of Node's asynch API. Every asynch method
+takes a callback as its last argument. The return value is an
+`event.EventEmitter`, so listeners can also be optionally added.
 
 ### Creating a client ###
 
@@ -91,7 +108,12 @@ cradle.setup({
 });
 ```
 
-The primary server is given as in the normal configuration. Alternate servers configured in the `servers` array inherit configuration options from the primary server. When the primary server refuses a connection, the request will be routed to the alternate servers, in the order given. Requests may fail if the alternate servers have not finished replicating recent changes.
+The primary server is given as in the normal configuration. Alternate
+servers configured in the `servers` array inherit configuration options from
+the primary server. When the primary server refuses a connection, the
+request will be routed to the alternate servers, in the order given.
+Requests may fail if the alternate servers have not finished replicating
+recent changes.
 
 ### creating a database ###
 
@@ -132,9 +154,11 @@ db.get('vader', function (err, doc) {
 });
 ```
 
-> If you want to get a specific revision for that document, you can pass it as the 2nd parameter to `get()`.
+> If you want to get a specific revision for that document, you can pass it
+> as the 2nd parameter to `get()`.
 
-Cradle is also able to fetch multiple documents if you have a list of ids, just pass an array to `get`:
+Cradle is also able to fetch multiple documents if you have a list of ids,
+just pass an array to `get`:
 
 ```javascript
 db.get(['luke', 'vader'], function (err, doc) { ... });
@@ -153,7 +177,8 @@ db.view('characters/all', function (err, res) {
 
 ### creating/updating documents ###
 
-In general, document creation is done with the `save()` method, while updating is done with `merge()`.
+In general, document creation is done with the `save()` method, while
+updating is done with `merge()`.
 
 #### creating with an id _(PUT)_ ####
 
@@ -185,9 +210,13 @@ db.save('luke', '1-94B6F82', {
 });
 ```
 
-Note that when saving a document this way, CouchDB overwrites the existing document with the new one. If you want to update only certain fields of the document, you have to fetch it first (with `get`), make your changes, then resave the modified document with the above method.
+Note that when saving a document this way, CouchDB overwrites the existing
+document with the new one. If you want to update only certain fields of the
+document, you have to fetch it first (with `get`), make your changes, then
+resave the modified document with the above method.
 
-If you only want to update one or more attributes, and leave the others untouched, you can use the `merge()` method: 
+If you only want to update one or more attributes, and leave the others
+untouched, you can use the `merge()` method: 
 
 ```javascript
 db.merge('luke', {jedi: true}, function (err, res) {
@@ -196,11 +225,13 @@ db.merge('luke', {jedi: true}, function (err, res) {
 });
 ```
 
-Note that we didn't pass a `_rev`, this only works because we previously saved a full version of 'luke', and the `cache` option is enabled.
+Note that we didn't pass a `_rev`, this only works because we previously
+saved a full version of 'luke', and the `cache` option is enabled.
 
 #### bulk insertion ####
 
-If you want to insert more than one document at a time, for performance reasons, you can pass an array to `save()`:
+If you want to insert more than one document at a time, for performance
+reasons, you can pass an array to `save()`:
 
 ```javascript
 db.save([
@@ -214,7 +245,8 @@ db.save([
 
 #### creating views ####
 
-Here we create a design document named 'characters', with two views: 'all' and 'darkside'.
+Here we create a design document named 'characters', with two views: 'all'
+and 'darkside'.
 
 ```javascript
 db.save('_design/characters', {
@@ -235,7 +267,8 @@ db.save('_design/characters', {
 
 These views can later be queried with `db.view('characters/all')`, for example.
 
-Here we create a temporary view. WARNING: do not use this in production as it is extremely slow (use it to test views).
+Here we create a temporary view. WARNING: do not use this in production as
+it is extremely slow (use it to test views).
 
 ```javascript
 db.temporaryView({
@@ -250,7 +283,8 @@ db.temporaryView({
 
 ### creating validation ###
 
-when saving a design document, cradle guesses you want to create a view, mention views explicitly to work around this.
+when saving a design document, cradle guesses you want to create a view,
+mention views explicitly to work around this.
 
 ```javascript
 db.save('_design/laws', {
@@ -266,7 +300,8 @@ db.save('_design/laws', {
 
 ### removing documents _(DELETE)_ ###
 
-To remove a document, you call the `remove()` method, passing the latest document revision.
+To remove a document, you call the `remove()` method, passing the latest
+document revision.
 
 ```javascript
 db.remove('luke', '1-94B6F82', function (err, res) {
@@ -274,7 +309,9 @@ db.remove('luke', '1-94B6F82', function (err, res) {
 });
 ```
 
-If `remove` is called without a revision, and the document was recently fetched from the database, it will attempt to use the cached document's revision, providing caching is enabled.
+If `remove` is called without a revision, and the document was recently
+fetched from the database, it will attempt to use the cached document's
+revision, providing caching is enabled.
 
 Connecting with authentication and SSL
 --------------------------------------
@@ -314,8 +351,9 @@ db.changes({ since: 42 }, function (list) {
 });
 ```
 
-The callback will receive the list of changes as an *Array*. If you want to include
-the affected documents, simply pass `include_docs: true` in the options.
+The callback will receive the list of changes as an *Array*. If you want to
+include the affected documents, simply pass `include_docs: true` in the
+options.
 
 ### Streaming #
 
@@ -330,7 +368,8 @@ db.changes({ since: 42 }).on('response', function (res) {
 });
 ```
 
-In this case, it returns an `EventEmitter`, which behaves very similarly to node's `Stream` API.
+In this case, it returns an `EventEmitter`, which behaves very similarly to
+node's `Stream` API.
 
 
 Other API methods
