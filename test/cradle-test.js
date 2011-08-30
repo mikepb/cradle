@@ -47,7 +47,7 @@ vows.describe("Cradle").addBatch({
             assert.equal(c.options.protocol, "http");
             assert.equal(c.options.port, 4242);
             assert.equal(c.options.milk, 'white');
-            assert.equal(c.options.cache, true);
+            assert.equal(c.options.cache, false);
         },
         "should have alternate server settings inheriting from primary settings": function(c) {
             var options = c.options.servers;
@@ -55,12 +55,12 @@ vows.describe("Cradle").addBatch({
             assert.equal(options[0].protocol, "http");
             assert.equal(options[0].port, 4242);
             assert.equal(options[0].milk, 'white');
-            assert.equal(options[0].cache, true);
+            assert.equal(options[0].cache, false);
             assert.equal(options[1].host, "alt1.cloudhead.io");
             assert.equal(options[1].protocol, "http");
             assert.equal(options[1].port, 4242);
             assert.equal(options[1].milk, 'chocolate');
-            assert.equal(options[1].cache, true);
+            assert.equal(options[1].cache, false);
         },
         "with just a {} passed to a new Connection object": {
             topic: function () {
