@@ -10,7 +10,7 @@ var cradle = require('../lib/cradle');
 
 vows.describe('cradle/Cache').addBatch({
     'A cradle.Connection instance with a *cacheSize* specified': {
-        topic: new(cradle.Connection)({ cache: true, cacheSize: 16 }),
+        topic: cradle.createClient({ cache: true, cacheSize: 16 }),
 
         'should set the database cache size appropriately': function (topic) {
             assert.equal (topic.database('random').cache.size, 16);

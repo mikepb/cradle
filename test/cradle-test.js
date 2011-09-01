@@ -26,7 +26,7 @@ var cradle = require('../lib/cradle');
 var vows = require('vows');
 
 vows.describe("Cradle").addBatch({
-    "Default connection settings": {
+    "Default client settings": {
         topic: function () {
             cradle.setup({
                 host: "http://cloudhead.io",
@@ -42,7 +42,7 @@ vows.describe("Cradle").addBatch({
             });
             return cradle.createClient();
         },
-        "should be carried on to new Connections": function (c) {
+        "should be carried on to new Clients": function (c) {
             assert.equal(c.options.host, "cloudhead.io");
             assert.equal(c.options.protocol, "http");
             assert.equal(c.options.port, 4242);
@@ -62,7 +62,7 @@ vows.describe("Cradle").addBatch({
             assert.equal(options[1].milk, 'chocolate');
             assert.equal(options[1].cache, false);
         },
-        "with just a {} passed to a new Connection object": {
+        "with just a {} passed to a new Client object": {
             topic: function () {
                 return cradle.createClient({milk: 'green'});
             },
@@ -71,7 +71,7 @@ vows.describe("Cradle").addBatch({
                 assert.equal(c.options.port, 4242);
             }
         },
-        "with a host and port passed to Connection": {
+        "with a host and port passed to Client": {
             topic: function () {
                 return cradle.createClient({
                     host: "255.255.0.0",
@@ -83,7 +83,7 @@ vows.describe("Cradle").addBatch({
                 assert.equal(c.options.port, 9696);
             }
         },
-        "with a host, port and options passed to Connection": {
+        "with a host, port and options passed to Client": {
             topic: function () {
                 return cradle.createClient({
                     host: "4.4.4.4",
@@ -97,7 +97,7 @@ vows.describe("Cradle").addBatch({
                 assert.equal(c.options.raw, true);
             }
         },
-        "with a host and port passed to Connection": {
+        "with a host and port passed to Client": {
             topic: function () {
                 return cradle.createClient({
                     host: "https://4.4.4.4",
@@ -131,9 +131,9 @@ vows.describe("Cradle").addBatch({
     //
     // Cache
     //
-    "A Cradle connection (cache)": {
+    "A Cradle client (cache)": {
         topic: function () {
-            return new(cradle.Connection)({
+            return cradle.createClient({
                 host: '127.0.0.1',
                 port: 5984,
                 cache: true
@@ -272,9 +272,9 @@ vows.describe("Cradle").addBatch({
             }
         }
     },
-    "Connection": {
+    "Client": {
         topic: function () {
-            return new(cradle.Connection)({
+            return cradle.createClient({
                 host: '127.0.0.1',
                 port: 5984,
                 cache: false
