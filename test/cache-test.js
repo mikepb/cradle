@@ -3,8 +3,6 @@ var path = require('path'),
     assert = require('assert'),
     events = require('events');
 
-require.paths.unshift(path.join(__dirname, '..', 'lib'));
-
 var vows = require('vows');
 var cradle = require('../lib/cradle');
 
