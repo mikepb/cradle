@@ -357,17 +357,43 @@ vows.describe('Connector').addBatch({
         assert.isUndefined(connector.headers['Authorization']);
       }
     },
-    'created with a URL with a custom agent': {
+    'created with a URL with username': {
       topic: function() {
-        var agent = {}
-          , options = {
-              url: 'http://anonymous:xyzzy@www.example.com:8888/hello',
-              agent: agent
-            };
-        this.callback(null, new Connector(options), agent);
+        this.callback(null, new Connector('http://anonymous@www.example.com'));
       },
-      'should use the given agent': function(err, connector, agent) {
-        assert.strictEqual(connector.agent, agent);
+      'should parse and use the URL options': function(err, connector) {
+        assert.strictEqual(connector.username, 'anonymous');
+        assert.strictEqual(connector.host, 'www.example.com');
+      },
+      'should have the basic authentication header': function(err, connector) {
+        assert.strictEqual(connector.headers['Authorization'], 'Basic YW5vbnltb3VzOg==');
+      }
+    },
+    'created with a URL with username and password': {
+      topic: function() {
+        this.callback(null, new Connector('http://anonymous:xyzzy@www.example.com'));
+      },
+      'should parse and use the URL options': function(err, connector) {
+        assert.strictEqual(connector.username, 'anonymous');
+        assert.strictEqual(connector.password, 'xyzzy');
+        assert.strictEqual(connector.host, 'www.example.com');
+      },
+      'should have the basic authentication header': function(err, connector) {
+        assert.strictEqual(connector.headers['Authorization'], 'Basic YW5vbnltb3VzOnh5enp5');
+      }
+    },
+    'created with a URL with username and password': {
+      topic: function() {
+        this.callback(null, new Connector('http://anonymous:xyzzy@www.example.com'));
+      },
+      'should parse and use the URL options': function(err, connector) {
+        assert.strictEqual(connector.username, 'anonymous');
+        assert.strictEqual(connector.password, 'xyzzy');
+        assert.strictEqual(connector.host, 'www.example.com');
+      },
+      'should have the basic authentication header': function(err, connector) {
+        assert.strictEqual(connector.headers['Authorization'], 'Basic YW5vbnltb3VzOnh5enp5');
+      }
       }
     },
     'created with a URL with a custom socket': {
