@@ -357,13 +357,34 @@ vows.describe('Connector').addBatch({
         assert.isUndefined(connector.headers['Authorization']);
       }
     },
+    'created with a URL with https': {
+      topic: function() {
+        this.callback(null, new Connector('https://www.example.com'));
+      },
+      'should parse and use the URL options': function(err, connector) {
+        assert.strictEqual(connector.maxSockets, 8);
+        assert.strictEqual(connector.host, 'www.example.com');
+        assert.strictEqual(connector.port, 5984);
+        assert.strictEqual(connector.path, '/');
+        assert.strictEqual(connector.method, 'GET');
+        assert.isTrue(connector.secure);
+        assert.isUndefined(connector.username);
+        assert.isUndefined(connector.password);
+      }
+    },
     'created with a URL with username': {
       topic: function() {
         this.callback(null, new Connector('http://anonymous@www.example.com'));
       },
       'should parse and use the URL options': function(err, connector) {
-        assert.strictEqual(connector.username, 'anonymous');
+        assert.strictEqual(connector.maxSockets, 8);
         assert.strictEqual(connector.host, 'www.example.com');
+        assert.strictEqual(connector.port, 5984);
+        assert.strictEqual(connector.path, '/');
+        assert.strictEqual(connector.method, 'GET');
+        assert.isFalse(connector.secure);
+        assert.strictEqual(connector.username, 'anonymous');
+        assert.isUndefined(connector.password);
       },
       'should have the basic authentication header': function(err, connector) {
         assert.strictEqual(connector.headers['Authorization'], 'Basic YW5vbnltb3VzOg==');
@@ -374,9 +395,14 @@ vows.describe('Connector').addBatch({
         this.callback(null, new Connector('http://anonymous:xyzzy@www.example.com'));
       },
       'should parse and use the URL options': function(err, connector) {
+        assert.strictEqual(connector.maxSockets, 8);
+        assert.strictEqual(connector.host, 'www.example.com');
+        assert.strictEqual(connector.port, 5984);
+        assert.strictEqual(connector.path, '/');
+        assert.strictEqual(connector.method, 'GET');
+        assert.isFalse(connector.secure);
         assert.strictEqual(connector.username, 'anonymous');
         assert.strictEqual(connector.password, 'xyzzy');
-        assert.strictEqual(connector.host, 'www.example.com');
       },
       'should have the basic authentication header': function(err, connector) {
         assert.strictEqual(connector.headers['Authorization'], 'Basic YW5vbnltb3VzOnh5enp5');
@@ -387,13 +413,32 @@ vows.describe('Connector').addBatch({
         this.callback(null, new Connector('http://anonymous:xyzzy@www.example.com'));
       },
       'should parse and use the URL options': function(err, connector) {
+        assert.strictEqual(connector.maxSockets, 8);
+        assert.strictEqual(connector.host, 'www.example.com');
+        assert.strictEqual(connector.port, 5984);
+        assert.strictEqual(connector.path, '/');
+        assert.strictEqual(connector.method, 'GET');
+        assert.isFalse(connector.secure);
         assert.strictEqual(connector.username, 'anonymous');
         assert.strictEqual(connector.password, 'xyzzy');
-        assert.strictEqual(connector.host, 'www.example.com');
       },
       'should have the basic authentication header': function(err, connector) {
         assert.strictEqual(connector.headers['Authorization'], 'Basic YW5vbnltb3VzOnh5enp5');
       }
+    },
+    'created with a URL with port': {
+      topic: function() {
+        this.callback(null, new Connector('http://www.example.com:8080'));
+      },
+      'should parse and use the URL options': function(err, connector) {
+        assert.strictEqual(connector.maxSockets, 8);
+        assert.strictEqual(connector.host, 'www.example.com');
+        assert.strictEqual(connector.port, 8080);
+        assert.strictEqual(connector.path, '/');
+        assert.strictEqual(connector.method, 'GET');
+        assert.isFalse(connector.secure);
+        assert.isUndefined(connector.username);
+        assert.isUndefined(connector.password);
       }
     },
     'created with a URL with a custom socket': {
