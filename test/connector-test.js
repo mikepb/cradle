@@ -4,16 +4,13 @@
  * MIT Licensed
  */
 
-var vows = require('vows'),
-    assert = require('assert')
-    sinon = require('sinon');
-
-var EventEmitter = require('events').EventEmitter
+var vows = require('vows')
+  , assert = require('assert')
+  , sinon = require('sinon')
   , http = require('http')
   , https = require('https');
 
 var Connector = require('../lib/cradle/connector').Connector;
-
 
 var shouldBehaveLikeRequestMethod = {
   topic: function(connector, options) {
